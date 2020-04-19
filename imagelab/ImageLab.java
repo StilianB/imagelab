@@ -11,6 +11,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JLabel;
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
 import java.util.List;
@@ -67,6 +68,10 @@ public class ImageLab {
         filters = new ArrayList<ImageFilter>();
         frame   = new JFrame(VERSION);
         Container cpane = frame.getContentPane();
+
+        JLabel versionLabel = new JLabel();
+        versionLabel.setText("ImageLab -- Version: " + VERSION);
+        frame.add(versionLabel);
 
         JButton jButton1 = new javax.swing.JButton();
         JButton jButton2 = new javax.swing.JButton();
