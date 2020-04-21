@@ -1,17 +1,19 @@
 package imagelab;
-import imagelab.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.awt.image.*;
+
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 /**
  * Used to close an active window.
+ *
  * @author Dr. Aaron Gordon
  * @author Dr. Jody Paul
  */
 public class WindowCloser extends WindowAdapter {
 
-    /** The image frame to be killed. */
+    /**
+     * The image frame to be killed.
+     */
     ILFrame theFrame;
 
     public WindowCloser(ILFrame f) {
