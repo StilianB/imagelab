@@ -30,7 +30,7 @@ public class HFlip implements ImageFilter {
         im[r][x] = tmp;
       } //for c
     } //for r;
-
+    
     filteredImage = new ImgProvider();
     filteredImage.setBWImage(im);
     filteredImage.showPix("Flipped Horizontally");
