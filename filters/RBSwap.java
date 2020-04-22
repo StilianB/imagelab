@@ -8,21 +8,24 @@ import imagelab.ImgProvider;
  */
 public class RBSwap implements ImageFilter {
 
-  ImgProvider filteredImage;
+  /**
+   * The filtered image.
+   */
+  private ImgProvider filteredImage;
 
   /**
    * The filter itself.
    *
    * @param ip the image to be filtered.
    */
-  public void filter(ImgProvider ip) {
+  public void filter(final ImgProvider ip) {
     short[][] red = ip.getRed();
     short[][] blue = ip.getBlue();
 
     filteredImage = new ImgProvider();
     filteredImage.setColors(blue, ip.getGreen(), red, ip.getAlpha());
     filteredImage.showPix("Red <=> Blue");
-  }//filter
+  } //filter
 
   /**
    * Retrieve the filtered image.
@@ -31,7 +34,7 @@ public class RBSwap implements ImageFilter {
    */
   public ImgProvider getImgProvider() {
     return filteredImage;
-  }//getImgProvider
+  } //getImgProvider
 
   /**
    * Retrieve the name of the filter to add to the menu.
@@ -43,4 +46,3 @@ public class RBSwap implements ImageFilter {
   } //getMenuLabel
 
 }
-

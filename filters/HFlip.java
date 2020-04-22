@@ -8,14 +8,17 @@ import imagelab.ImgProvider;
  */
 public class HFlip implements ImageFilter {
 
-  ImgProvider filteredImage;
+  /**
+   * The filtered image.
+   */
+  private ImgProvider filteredImage;
 
   /**
    * The filter itself.
    *
    * @param ip the image to be filtered.
    */
-  public void filter(ImgProvider ip) {
+  public void filter(final ImgProvider ip) {
     short tmp;
     short[][] im = ip.getBWImage();
     int height = im.length;
@@ -25,13 +28,13 @@ public class HFlip implements ImageFilter {
         tmp = im[r][c];
         im[r][c] = im[r][x];
         im[r][x] = tmp;
-      }//for c
-    }//for r;
+      } //for c
+    } //for r;
 
     filteredImage = new ImgProvider();
     filteredImage.setBWImage(im);
     filteredImage.showPix("Flipped Horizontally");
-  }//filter
+  } //filter
 
   /**
    * Retrieve the filtered image.
@@ -40,7 +43,7 @@ public class HFlip implements ImageFilter {
    */
   public ImgProvider getImgProvider() {
     return filteredImage;
-  }//getImgProvider
+  } //getImgProvider
 
   /**
    * Retrieve the name of the filter to add to the menu.

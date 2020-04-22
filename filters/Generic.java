@@ -12,14 +12,17 @@ import imagelab.ImgProvider;
  */
 public class Generic implements ImageFilter {
 
-  ImgProvider filteredImage;
+  /**
+   * The filtered image.
+   */
+  private ImgProvider filteredImage;
 
   /**
    * The filter itself.
    *
    * @param ip the image to be filtered.
    */
-  public void filter(ImgProvider ip) {
+  public void filter(final ImgProvider ip) {
     short tmp;
     short[][] red = ip.getRed();     // Red plane
     short[][] green = ip.getGreen(); // Green plane
@@ -36,14 +39,14 @@ public class Generic implements ImageFilter {
       for (int column = 0; column < width; column++) {
         tmp = bw[row][column];
         bw[row][column] = tmp;
-      }//for column
-    }//for row
+      } //for column
+    } //for row
 
     filteredImage = new ImgProvider();
     filteredImage.setBWImage(bw);
     filteredImage.setColors(red, green, blue, alpha);
     filteredImage.showPix("Generic");
-  }//filter
+  } //filter
 
   /**
    * Retrieve the filtered image.
@@ -52,7 +55,7 @@ public class Generic implements ImageFilter {
    */
   public ImgProvider getImgProvider() {
     return filteredImage;
-  }//getImgProvider
+  } //getImgProvider
 
   /**
    * Retrieve the name of the filter to add to the menu.
