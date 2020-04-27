@@ -398,7 +398,6 @@ public class ImgProvider extends JComponent {
      * of the Red, Green and Blue notes respectively.
      */
     public void play() {
-        if(playThread!=null) playThread.stop();
         playThread = new Thread(() -> {
             short[][] red = getRed();     // Red plane
             short[][] green = getGreen(); // Green plane
