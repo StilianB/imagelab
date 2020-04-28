@@ -1,6 +1,6 @@
 package imagelab;
 
-import java.awt.*;
+import java.awt.Image;
 
 /**
  * Graphics frame used for dynamic display of an image.
@@ -15,11 +15,13 @@ public class DynDisplayImage extends DisplayImage {
     private static final long serialVersionUID = 11L;
 
     /** Image for this frame. */
-    Image img;
+    private Image img;
     /** Display panel for this frame. */
     private DynaPanel pane;
     /** Singleton object. */
     private DynDisplayImage singleton;
+    /**changeImage sleep timing. */
+    private static final int SLEEP_TIME = 50;
 
     /**
      * This constructor takes the image object to display
@@ -28,7 +30,7 @@ public class DynDisplayImage extends DisplayImage {
      * @param imp   the image object to display
      * @param title the window title
      */
-    public DynDisplayImage(ImgProvider imp, String title) {
+    public DynDisplayImage(final ImgProvider imp, final String title) {
         super(imp, title);
     }
 
@@ -42,7 +44,8 @@ public class DynDisplayImage extends DisplayImage {
      * @param title the window title
      * @param slow  if present, indicates slow display
      */
-    public DynDisplayImage(ImgProvider imp, String title, boolean slow) {
+    public DynDisplayImage(
+        final ImgProvider imp, final String title, final boolean slow) {
         super(imp, title, slow);
     }
 
@@ -62,8 +65,9 @@ public class DynDisplayImage extends DisplayImage {
      * Change the displayed image in this object.
      *
      * @param imp the image object to display
+     * @param title the title of the image
      */
-    public void changeImage(ImgProvider imp, String title) {
+    public void changeImage(final ImgProvider imp, final String title) {
         setTitle(title);
         improvider = imp;
         img = imp.getImage();
@@ -74,7 +78,7 @@ public class DynDisplayImage extends DisplayImage {
         while (-1 == (width = img.getWidth(null))) {
             //System.out.println("DynDisplayImage:constructor - first while");
             try {
-                Thread.sleep(50);
+                Thread.sleep(SLEEP_TIME);
             } catch (Exception e) {
             }
         }
@@ -82,7 +86,7 @@ public class DynDisplayImage extends DisplayImage {
         while (-1 == (height = img.getHeight(null))) {
             //System.out.println("DynDisplayImage:constructor - second while");
             try {
-                Thread.sleep(50);
+                Thread.sleep(SLEEP_TIME);
             } catch (Exception e) {
             }
         }

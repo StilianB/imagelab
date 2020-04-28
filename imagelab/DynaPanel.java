@@ -1,7 +1,9 @@
 package imagelab;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JPanel;
+import java.awt.Color;
+import java.awt.Image;
+import java.awt.Graphics;
 
 /**
  * DynaPanel is a class to allow for dynamically displaying images.
@@ -25,6 +27,8 @@ public class DynaPanel extends JPanel implements ILPanel {
 
     /**
      * Factory method to get the canvas singleton object.
+     *
+     * @return the DynPanSingleton Object
      */
     public static DynaPanel getDynPan() {
         if (dynPanSingleton == null) {
@@ -34,9 +38,11 @@ public class DynaPanel extends JPanel implements ILPanel {
         return dynPanSingleton;
     }
 
-    // Instance Variables
+    /**Instance Variable for background color. */
     private Color backgroundColour;
+    /**Instance Variable for the panel image. */
     private Image panelImage;
+    /**Instance Variable for the graphic. */
     private Graphics graphic;
 
     /**
@@ -53,7 +59,7 @@ public class DynaPanel extends JPanel implements ILPanel {
      *
      * @param img image to be displayed
      */
-    public DynaPanel(Image img) {
+    public DynaPanel(final Image img) {
         super(true);
         panelImage = img;
         System.out.println("DynaPanel: panelImage = " + panelImage);
@@ -64,7 +70,7 @@ public class DynaPanel extends JPanel implements ILPanel {
      *
      * @param imp image to be displayed
      */
-    public DynaPanel(ImgProvider imp) {
+    public DynaPanel(final ImgProvider imp) {
         super(true);
         int width = imp.getWidth();
         int height = imp.getHeight();
@@ -77,7 +83,7 @@ public class DynaPanel extends JPanel implements ILPanel {
      *
      * @param image the image object to be drawn on the canvas
      */
-    public void newImage(Image image) {
+    public void newImage(final Image image) {
         System.out.println("DynaPanel:draw(i): image = " + image);
         panelImage = image;
     }
@@ -87,7 +93,7 @@ public class DynaPanel extends JPanel implements ILPanel {
      *
      * @param imp the image object to be drawn on the canvas
      */
-    public void draw(ImgProvider imp) {
+    public void draw(final ImgProvider imp) {
         newImage(imp.getImage());
     }
 
@@ -99,7 +105,7 @@ public class DynaPanel extends JPanel implements ILPanel {
      *
      * @param milliseconds the number
      */
-    public void wait(int milliseconds) {
+    public void wait(final int milliseconds) {
         try {
             Thread.sleep(milliseconds);
         } catch (Exception e) {
@@ -109,8 +115,10 @@ public class DynaPanel extends JPanel implements ILPanel {
 
     /**
      * Dynamic (re-)paint.
+     *
+     * @param g Graphic being used to draw image
      */
-    public void paint(Graphics g) {
+    public void paint(final Graphics g) {
         g.drawImage(panelImage, 0, 0, this);
     }
 }

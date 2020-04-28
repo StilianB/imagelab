@@ -1,6 +1,7 @@
 package imagelab;
 
-import java.awt.*;
+import java.awt.Graphics;
+import java.awt.Image;
 
 /**
  * Panel used to display images.

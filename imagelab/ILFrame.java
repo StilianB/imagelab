@@ -1,7 +1,7 @@
 package imagelab;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JFrame;
+import java.awt.Color;
 
 /**
  * Graphics frame used to display an image.
