@@ -57,7 +57,7 @@ public class DynaPanel extends JPanel implements ILPanel {
     public DynaPanel(Image img) {
         super(true);
         panelImage = img;
-        System.out.println("DynaPanel: panelImage = " + panelImage);
+        //System.out.println("DynaPanel: panelImage = " + panelImage);
     }
 
     /**
@@ -69,7 +69,8 @@ public class DynaPanel extends JPanel implements ILPanel {
         int width  = imp.getWidth();
         int height = imp.getHeight();
         panelImage = imp.getImage();
-        System.out.println("DynaPanel: panelImage = " + panelImage);
+        System.out.println("Using DynaPanel");
+        //System.out.println("DynaPanel: panelImage = " + panelImage);
     }
 
     /**
@@ -77,7 +78,8 @@ public class DynaPanel extends JPanel implements ILPanel {
      * @param image the image object to be drawn on the canvas
      */
     public void newImage(Image image) {
-        System.out.println("DynaPanel:draw(i): image = " + image);
+        //System.out.println("Using DynaPanel");
+        //System.out.println("DynaPanel:draw(i): image = " + image);
         panelImage = image;
     }
 
