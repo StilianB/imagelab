@@ -48,7 +48,7 @@ public class ImageLab {
     private static List<ImageFilter> filters;
 
     /** The current image provider. */
-    static ImgProvider impro;
+    public static ImgProvider impro;
 
     /** A copy of <CODE>this</CODE>. */
     private static ImageLab theLab;
