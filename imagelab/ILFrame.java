@@ -13,7 +13,7 @@ public abstract class ILFrame extends JFrame {
     /** Serialization version. */
     private static final long serialVersionUID = 11L;
     /** Image provider that activated this frame. */
-    private ImgProvider improvider;
+    public ImgProvider improvider;
     /** Vertical space needed for frame title. */
     public static final int TITLE_HEIGHT = 40;
     /** Vertical space needed for menu bar. */
