@@ -69,8 +69,6 @@ public class DynaPanel extends JPanel implements ILPanel {
         int width  = imp.getWidth();
         int height = imp.getHeight();
         panelImage = imp.getImage();
-        System.out.println("Using DynaPanel");
-        //System.out.println("DynaPanel: panelImage = " + panelImage);
     }
 
     /**

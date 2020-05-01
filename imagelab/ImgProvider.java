@@ -18,7 +18,6 @@ import java.io.*;
 public class ImgProvider extends JComponent {
     /** Serialization version. */
     private static final long serialVersionUID = 11L;
-
     static boolean  all;
     /** true if this ImgProvider currently holds an image; false otherwise. */
     boolean         isLoaded;
@@ -26,7 +25,7 @@ public class ImgProvider extends JComponent {
     int             pixheight;
     /** Image width in pixels. */
     int             pixwidth;
-    /**Thread allows play() to run independently of display.*/
+    /** Thread allows play() to run independently of display. */
     static Thread playThread;
     /** The raw image. */
     Image           img;
@@ -47,7 +46,7 @@ public class ImgProvider extends JComponent {
     /** Identification used to distinguish one ImgProvider from another. */
     protected int id;
     protected ImageLab lab;
-    /**Used to pass instance between classes*/
+    /** Used to pass instance between classes. */
     private  DisplayImage dis;
     /** No-argument constructor.  Sets name to empty string. */
     public ImgProvider() {
@@ -199,7 +198,7 @@ public class ImgProvider extends JComponent {
         img = getToolkit().createImage(
                 new MemoryImageSource(pixwidth, pixheight, pix, 0, pixwidth));
         //System.out.println("ImgProvider:showPix:  before displayImage");
-        dis = new DisplayImage(this,name,true);
+        dis = new DisplayImage(this, name, true);
         //System.out.println("ImgProvider:showPix:  after displayImage");
         try { Thread.sleep(100);}catch(Exception e){}       //make sure image has time to display
     }//showPix
@@ -400,77 +399,80 @@ public class ImgProvider extends JComponent {
      * values of each row are used as the velocities
      * of the Red, Green and Blue notes respectively.
      */
-      public void play() {
-        if(playThread!=null) playThread.stop();
+  
+    public void play() {
         playThread = new Thread(() -> {
-        short[][] red = getRed();     // Red plane
-        short[][] green = getGreen(); // Green plane
-        short[][] blue = getBlue();   // Blue plane
-        short[][] bw = getRed();  // Black & white image
-        short[][] alpha = getAlpha(); // Alpha channel
-        short[][] hue;
-        short[][] saturation;
-        short[][] brightness;
-   
-        int height = red.length;
-        int width  = red[0].length;
-    
-        //System.out.println("Playing image number " + getid());
-        
-        Tune tune = new Tune();
-        /* A 7-octave pentatonic scale. */
-        Scale scale = new Scale();
-        for (int i = -3; i < 4; i++) {
-            scale.addPitch( Note.C       + (12 * i));
-            scale.addPitch((Note.C + 3)  + (12 * i));
-            scale.addPitch((Note.C + 5)  + (12 * i));
-            scale.addPitch((Note.C + 7)  + (12 * i));
-            scale.addPitch((Note.C + 10) + (12 * i));
-        }
-        int pitchRange = scale.numPitches();
-        Chord chord;
-        int[] velocity = {0, 0, 0};
-        int velocityRange = Note.VRANGE;
-        int tempo = Note.DE/2;
-        int rowSum = 0;
-        int redSum = 0;
-        int greenSum = 0;
-        int blueSum = 0;
-        float[] hsb = {0, 0, 0};
-        float hueSum = 0;
-        float satSum = 0;
-        float brtSum = 0;
-        
-        for (int row = 0; row < height; row++) {
-            for (int column=0; column < width; column++) {
-                rowSum += (bw[row][column]);
-                redSum += (red[row][column]);
-                greenSum += (green[row][column]);
-                blueSum += (blue[row][column]);
-                java.awt.Color.RGBtoHSB(red[row][column],green[row][column],blue[row][column],hsb);
-                hueSum += hsb[0];
-                satSum += hsb[1];
-                brtSum += hsb[2];
-            }//for column
-            velocity[0] = (int)(Note.VPP + (velocityRange * (hueSum / width)));
-            velocity[1] = (int)(Note.VPP + (velocityRange * (satSum / width)));
-            velocity[2] = (int)(Note.VPP + (velocityRange * (brtSum / width)));
-            chord = new Chord();
-            chord.addNote(new Note(0, (scale.getPitch(pitchRange *   redSum / width / 256)), tempo, velocity[0]));
-            chord.addNote(new Note(1, (scale.getPitch(pitchRange * greenSum / width / 256)), tempo, velocity[1]));
-            chord.addNote(new Note(2, (scale.getPitch(pitchRange *  blueSum / width / 256)), tempo, velocity[2]));
-            tune.addChord(chord);
-            rowSum = 0;
-            redSum = 0;
-            greenSum = 0;
-            blueSum = 0;
-            hueSum = 0;
-            satSum = 0;
-            brtSum = 0;
-        }//for row
-        int[] instruments = {Note.Vibes, Note.Pizzacatto, Note.MelodicTom};
-        Music m = new Music(3, instruments);
-        m.playTune(tune, this);
+            short[][] red = getRed();     // Red plane
+            short[][] green = getGreen(); // Green plane
+            short[][] blue = getBlue();   // Blue plane
+            short[][] bw = getBWImage();  // Black & white image
+            short[][] alpha = getAlpha(); // Alpha channel
+            short[][] hue;
+            short[][] saturation;
+            short[][] brightness;
+
+            int height = bw.length;
+            int width = bw[0].length;
+
+            Tune tune = new Tune();
+            /* A 7-octave pentatonic scale. */
+            Scale scale = new Scale();
+            for (int i = -3; i < 4; i++) {
+                scale.addPitch(Note.C + (12 * i));
+                scale.addPitch((Note.C + 3) + (12 * i));
+                scale.addPitch((Note.C + 5) + (12 * i));
+                scale.addPitch((Note.C + 7) + (12 * i));
+                scale.addPitch((Note.C + 10) + (12 * i));
+            }
+            int pitchRange = scale.numPitches();
+            Chord chord;
+            int[] velocity = {0, 0, 0};
+            int velocityRange = Note.VRANGE;
+            int tempo = Note.DE / 2;
+            int rowSum = 0;
+            int redSum = 0;
+            int greenSum = 0;
+            int blueSum = 0;
+            float[] hsb = {0, 0, 0};
+            float hueSum = 0;
+            float satSum = 0;
+            float brtSum = 0;
+
+            for (int row = 0; row < height; row++) {
+                for (int column = 0; column < width; column++) {
+                    rowSum += (bw[row][column]);
+                    redSum += (red[row][column]);
+                    greenSum += (green[row][column]);
+                    blueSum += (blue[row][column]);
+                    java.awt.Color
+                            .RGBtoHSB(red[row][column], green[row][column], blue[row][column],
+                                      hsb);
+                    hueSum += hsb[0];
+                    satSum += hsb[1];
+                    brtSum += hsb[2];
+                }//for column
+                velocity[0] = (int) (Note.VPP + (velocityRange * (hueSum / width)));
+                velocity[1] = (int) (Note.VPP + (velocityRange * (satSum / width)));
+                velocity[2] = (int) (Note.VPP + (velocityRange * (brtSum / width)));
+                chord = new Chord();
+                chord.addNote(new Note(0, (scale.getPitch(
+                        pitchRange * redSum / width / 256)), tempo, velocity[0]));
+                chord.addNote(new Note(1, (scale.getPitch(pitchRange * greenSum / width / 256)), tempo,
+                                       velocity[1]));
+                chord.addNote(new Note(2, (scale.getPitch(
+                        pitchRange * blueSum / width / 256)), tempo, velocity[2]));
+                tune.addChord(chord);
+                rowSum = 0;
+                redSum = 0;
+                greenSum = 0;
+                blueSum = 0;
+                hueSum = 0;
+                satSum = 0;
+                brtSum = 0;
+            }//for row
+            int[] instruments = {Note.Vibes, Note.Pizzacatto, Note.MelodicTom};
+            Music m = new Music(3, instruments);
+            m.playTune(tune, this);
         });
         playThread.start();
     }
@@ -498,33 +500,37 @@ public class ImgProvider extends JComponent {
         System.out.println("ImgProvider:showSlow: Second Pass");
     }
 
-    /**Used to remove current DisplayImage
-     *so that new one can be added.
+    /** 
+     * Used to remove current DisplayImage
+     * so that new one can be added.
      */
     public void removeContainer() {
        	dis.remove();
     }
 
     /**
-     *@return pix pixel array.
+     * @return pix pixel array
      */
     public int[] getPix() {
         return pix;
     }
+  
     /**
-     *@return the image  width in pixels.
+     * @return the image  width in pixels
      */
     public int getPixWidth() {
         return pixwidth;
     }
+  
     /**
-     *@return the image height in pixels.
+     * @return the image height in pixels
      */
     public int getPixHeight() {
         return pixheight;
     }
+  
     /**
-     *@return the DisplayImage object used for this instance.
+     * @return the DisplayImage object used for this instance
      */
     public DisplayImage getDis() {
         return dis;

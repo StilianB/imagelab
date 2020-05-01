@@ -29,7 +29,7 @@ public class Music {
     private int numChannels = 1;
 
     /**
-     * Construct Music without parameters.
+     * Construct Music with Standard Instrument.
      */
     public Music() {
         this(STD_INSTRUMENT);
@@ -51,7 +51,7 @@ public class Music {
      * Construct Music with specified channels and instrument.
      * @param numCh the number of channels
      * @param instr the integer code for the midi instrument
-     * to use for all channels
+     *        to use for all channels
      */
     public Music(final int numCh, final int instr) {
         instrument = instr;
@@ -95,7 +95,7 @@ public class Music {
      * Create and initialize the default synthesizer.
      * @param numCh the number of channels to initialize
      * @param instr the integer code for the midi instrument
-     * used for every channel
+     *        used for every channel
      */
     private void establishSynthesizer(final int numCh, final int instr) {
         int[] instruments = new int[numCh];
@@ -109,7 +109,7 @@ public class Music {
      * Create and initialize the default synthesizer.
      * @param numCh the number of channels to initialize
      * @param instr the integer code for the midi instrument
-     * used for every channel
+     *        used for every channel
      */
     private void establishSynthesizer(final int numCh, final int[] instr) {
         try {
@@ -203,10 +203,15 @@ public class Music {
         int[] pixels = improvider.getPix();
         int height = improvider.getPixHeight();
         int width = improvider.getPixWidth();
-        int newRow = width;
-	/**Holds increasing amounts of pixels
-	 *that are used to display more of the
-	 *image for each chord played.*/
+        /** Amount of pixels passed to row
+         * in each iteration.
+         */
+        int pixCount = width;
+	      /** 
+         * Holds increasing amounts of pixels
+	       * that are used to display more of the
+	       * image for each chord played.
+         */  
         int[] row = new int[width * height];
         /** Current chord */
         Chord chord;
@@ -216,11 +221,11 @@ public class Music {
         Iterator<Chord> tuneIt = tune.iterator();
         int line = 0;
         while (tuneIt.hasNext()) {
-            for (int i = 0; i < newRow; i++) {
+            for (int i = 0; i < pixCount; i++) {
                 row[i] = pixels[i];
             }
             improvider.getDis().synchronize(width, height, row);
-            newRow += width;
+            pixCount += width;
             System.out.println("[Line " + (line++) + "] ");
             chord = tuneIt.next();
             playChord(chord, duration);
@@ -241,40 +246,35 @@ public class Music {
     }
 
     /**
-     *Accessor for numChannels.
-     *@return numChannels.
+     * @return number of channels in this synth
      */
-    public int getNumChannels() {
+    int getNumChannels() {
         return numChannels;
     }
 
     /**
-     *Accessor for synth.
-     *@return synth.
+     * @return synthesizer interface reference
      */
-    public Synthesizer getSynthesizer() {
+    Synthesizer getSynthesizer() {
         return synth;
     }
 
     /**
-     *Accessor for channel.
-     *@return channels.
+     * @return the channels in this synthesizer
      */
     public MidiChannel[] getMidiChannel() {
         return channels;
     }
 
     /**
-     *Accessor for instrument.
-     *@return instrument.
+     * @return MIDI instrument number
      */
     public int getInstrument() {
         return instrument;
     }
 
     /**
-     *Accessor for velocity.
-     *@return velocity.
+     * @return velocity of this note
      */
     public int getVelocity() {
         return velocity;
