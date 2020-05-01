@@ -18,6 +18,7 @@ import java.io.*;
 public class ImgProvider extends JComponent {
     /** Serialization version. */
     private static final long serialVersionUID = 11L;
+    /** Debug variable to show all filters. */
     static boolean  all;
     /** true if this ImgProvider currently holds an image; false otherwise. */
     boolean         isLoaded;
@@ -475,6 +476,7 @@ public class ImgProvider extends JComponent {
             m.playTune(tune, this);
         });
         playThread.start();
+
     }
     
     /**
