@@ -81,7 +81,7 @@ public class DynaPanel extends JPanel implements ILPanel {
     /**
      * Draw a given image onto the canvas.
      *
-     * @param image the image object to be drawn on the canvas
+     * @param image object to be drawn on the canvas
      */
     public void newImage(final Image image) {
         System.out.println("DynaPanel:draw(i): image = " + image);
@@ -103,7 +103,7 @@ public class DynaPanel extends JPanel implements ILPanel {
      * This provides an easy way to specify a small delay which can be
      * used when producing animations.
      *
-     * @param milliseconds the number
+     * @param milliseconds the number of milliseconds to delay
      */
     public void wait(final int milliseconds) {
         try {

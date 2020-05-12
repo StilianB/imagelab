@@ -15,7 +15,8 @@ public class WindowCloser extends WindowAdapter {
     private ILFrame theFrame;
 
     /**
-     * Frame Constructor.
+     * Sets parameter f as the frame to be killed.
+     *
      * @param f The Frame
      */
     public WindowCloser(final ILFrame f) {
@@ -24,7 +25,8 @@ public class WindowCloser extends WindowAdapter {
 
     /**
      * Closes active window.
-     * @param e The Window
+     *
+     * @param e indication of changing window status
      */
     public void windowClosing(final WindowEvent e) {
         theFrame.setVisible(false);
@@ -33,7 +35,8 @@ public class WindowCloser extends WindowAdapter {
 
     /**
      * Sets the current frame as active.
-     * @param e The Window
+     *
+     * @param e indication of changing window status
      */
     public void windowActivated(final WindowEvent e) {
         //System.out.println("WindowCloser:windowActive");

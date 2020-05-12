@@ -33,7 +33,7 @@ public class ImgProvider extends JComponent {
     private static Thread playThread;
     /** Debug variable to show all filters. */
     private static boolean all;
-    /** True if this ImgProvider currently holds an image; false otherwise. */
+    /** true if this ImgProvider currently holds an image; false otherwise. */
     private boolean isLoaded;
     /** Image height in pixels. */
     protected int pixheight;
@@ -59,32 +59,12 @@ public class ImgProvider extends JComponent {
     private int id;
     /** Imagelab object. */
     private ImageLab lab;
-    /** Max alpha value. */
-    static final int ALPHA = 255;
-    /** Bits to left shift. */
-    static final int RANGE = 8;
-    /** Default time to sleep. */
-    static final int SLEEP_TIME = 300;
-    /** Number of music channels. */
-    static final int NUM_CHANNELS = 3;
-    /** Pitch modifier for the play method. */
-    static final int PITCH_MODIFIER = 256;
-    /** Sleep time for display. */
-    static final int DISPLAY_SLEEP_TIME = 1000;
-    /** First octive adjustment. */
-    static final int OCTIVE_ONE = 3;
-    /** Second octive adjustment. */
-    static final int OCTIVE_TWO = 5;
-    /** Third octive adjustment. */
-    static final int OCTIVE_THREE = 7;
-    /** Fourth octive adjustment. */
-    static final int OCTIVE_FOUR = 10;
-    /** Octive modifier. */
-    static final int OCTIVE_MODIFIER = 12;
-    /** Start of the scale. */
-    static final int SCALE_START = -3;
-    /** End of the scale. */
-    static final int SCALE_END = 4;
+    /** Value handling image transparancy. */
+    private static final int ALPHA_VALUE = 255;
+    /** Value used for bitwise operations. */
+    private static final int BITWISE_SHIFT = 8;
+    /** Default time for methods to sleep. */
+    private static final int SLEEP_TIME = 300;
 
 
     /** No-argument constructor.  Sets name to empty string. */
@@ -120,19 +100,19 @@ public class ImgProvider extends JComponent {
      * @param image 2D array of black-and-white pixel values (0-255)
      */
     public void setBWImage(final short[][] image) {
-        int spot = 0;
+        int spot = 0; //index into pix
         int tmp;
         pixheight = image.length;
         pixwidth = image[0].length;
         pix = new int[pixheight * pixwidth];
         for (int row = 0; row < pixheight; row++) {
             for (int col = 0; col < pixwidth; col++) {
-                tmp = ALPHA;
-                tmp = tmp << RANGE;
+                tmp = ALPHA_VALUE;
+                tmp = tmp << BITWISE_SHIFT;
                 tmp += image[row][col];
-                tmp = tmp << RANGE;
+                tmp = tmp << BITWISE_SHIFT;
                 tmp += image[row][col];
-                tmp = tmp << RANGE;
+                tmp = tmp << BITWISE_SHIFT;
                 tmp += image[row][col];
                 pix[spot++] = tmp;
             }
@@ -159,7 +139,7 @@ public class ImgProvider extends JComponent {
         short tmp;
         for (int r = 0; r < pixheight; r++) {
             for (int c = 0; c < pixwidth; c++) {
-                tmp = (short) (pix[spot++] & ALPHA);
+                tmp = (short) (pix[spot++] & ALPHA_VALUE);
                 b[r][c] = tmp;
             }
         }
@@ -217,18 +197,18 @@ public class ImgProvider extends JComponent {
         for (int i = 0; i < pix.length; i++) {
             int num = pix[i];
             final int numOfValues = 3;
-            blueToBW = num & ALPHA;
-            num = num >> RANGE;
-            greenToBW = num & ALPHA;
-            num = num >> RANGE;
-            redToBW = num & ALPHA;
-            num = num >> RANGE;
-            alphaToBW = num & ALPHA;
+            blueToBW = num & ALPHA_VALUE;
+            num = num >> BITWISE_SHIFT;
+            greenToBW = num & ALPHA_VALUE;
+            num = num >> BITWISE_SHIFT;
+            redToBW = num & ALPHA_VALUE;
+            num = num >> BITWISE_SHIFT;
+            alphaToBW = num & ALPHA_VALUE;
             blackToBW = (redToBW + greenToBW + blueToBW) / numOfValues;
             num = alphaToBW;
-            num = (num << RANGE) + blackToBW;
-            num = (num << RANGE) + blackToBW;
-            num = (num << RANGE) + blackToBW;
+            num = (num << BITWISE_SHIFT) + blackToBW;
+            num = (num << BITWISE_SHIFT) + blackToBW;
+            num = (num << BITWISE_SHIFT) + blackToBW;
             pix[i] = num;
         }
         if (all) {
@@ -287,13 +267,13 @@ public class ImgProvider extends JComponent {
         for (int r = 0; r < pixheight; r++) {
             for (int c = 0; c < pixwidth; c++) {
                 int num = pix[spot++];
-                blue[r][c] = (short) (num & ALPHA);
-                num = num >> RANGE;
-                green[r][c] = (short) (num & ALPHA);
-                num = num >> RANGE;
-                red[r][c] = (short) (num & ALPHA);
-                num = num >> RANGE;
-                alpha[r][c] = (short) (num & ALPHA);
+                blue[r][c] = (short) (num & ALPHA_VALUE);
+                num = num >> BITWISE_SHIFT;
+                green[r][c] = (short) (num & ALPHA_VALUE);
+                num = num >> BITWISE_SHIFT;
+                red[r][c] = (short) (num & ALPHA_VALUE);
+                num = num >> BITWISE_SHIFT;
+                alpha[r][c] = (short) (num & ALPHA_VALUE);
             }
         }
     }
@@ -324,11 +304,11 @@ public class ImgProvider extends JComponent {
                 blue[r][c] = b[r][c];
                 alpha[r][c] = al[r][c];
                 tmp = alpha[r][c];
-                tmp = tmp << RANGE;
+                tmp = tmp << BITWISE_SHIFT;
                 tmp += red[r][c];
-                tmp = tmp << RANGE;
+                tmp = tmp << BITWISE_SHIFT;
                 tmp += green[r][c];
-                tmp = tmp << RANGE;
+                tmp = tmp << BITWISE_SHIFT;
                 tmp += blue[r][c];
                 pix[spot++] = tmp;
             }
@@ -480,10 +460,8 @@ public class ImgProvider extends JComponent {
         fname = fd.getSelectedFile().getName();
         theFile = fd.getSelectedFile();
 
-        BufferedImage bufim = new BufferedImage(pixwidth, pixheight,
-                BufferedImage.TYPE_INT_RGB);
-        bufim.setRGB(0, 0, pixwidth, pixheight,
-                pix, 0, pixwidth);
+        BufferedImage bufim = new BufferedImage(pixwidth, pixheight, BufferedImage.TYPE_INT_RGB);
+        bufim.setRGB(0, 0, pixwidth, pixheight, pix, 0, pixwidth);
 
         try {
             if (!ImageIO.write(bufim, "jpeg", theFile)) {
@@ -508,11 +486,21 @@ public class ImgProvider extends JComponent {
          short[][] playRed = getRed();     // Red plane
          short[][] playGreen = getGreen(); // Green plane
          short[][] playBlue = getBlue();   // Blue plane
-         short[][] bw = getBWImage();  // Black & white image
+         short[][] bw = getBWImage();      // Black & white image
          short[][] playAlpha = getAlpha(); // Alpha channel
          short[][] hue;
          short[][] saturation;
          short[][] brightness;
+
+         final int numChannels = 3;         // Number of music channels
+         final int cyclesPerSec = 256;      // Frequency cycles per second
+         final int minorThird = 3;          // The number of semitones in a minor third interval.
+         final int perfectFourth = 5;       // The number of semitones in a perfect fourth interval.
+         final int perfectFifth = 7;        // The number of semitones in a perfect fifth interval.
+         final int minorSeventh = 10;       // The number of semitones in a minor seventh interval.
+         final int octaveFactor = 12;       // Octive modifier
+         final int octaveStartOffset = -3;  // Max offset to low frequency keys.
+         final int octaveEndOffset = 4;     // Max offset to high frequency keys.
 
          int height = bw.length;
          int width = bw[0].length;
@@ -522,12 +510,12 @@ public class ImgProvider extends JComponent {
          Tune tune = new Tune();
          /* A 7-octave pentatonic scale. */
          Scale scale = new Scale();
-         for (int i = SCALE_START; i < SCALE_END; i++) {
-             scale.addPitch(Note.C + (OCTIVE_MODIFIER * i));
-             scale.addPitch((Note.C + OCTIVE_ONE) + (OCTIVE_MODIFIER * i));
-             scale.addPitch((Note.C + OCTIVE_TWO) + (OCTIVE_MODIFIER * i));
-             scale.addPitch((Note.C + OCTIVE_THREE) + (OCTIVE_MODIFIER * i));
-             scale.addPitch((Note.C + OCTIVE_FOUR) + (OCTIVE_MODIFIER * i));
+         for (int i = octaveStartOffset; i < octaveEndOffset; i++) {
+             scale.addPitch(Note.C + (octaveFactor * i));
+             scale.addPitch((Note.C + minorThird) + (octaveFactor * i));
+             scale.addPitch((Note.C + perfectFourth) + (octaveFactor * i));
+             scale.addPitch((Note.C + perfectFifth) + (octaveFactor * i));
+             scale.addPitch((Note.C + minorSeventh) + (octaveFactor * i));
          }
          int pitchRange = scale.numPitches();
          Chord chord;
@@ -560,11 +548,11 @@ public class ImgProvider extends JComponent {
             velocity[2] = (int) (Note.VPP + (velocityRange * (brtSum / width)));
             chord = new Chord();
             chord.addNote(new Note(0, (scale.getPitch(pitchRange
-                    * redSum / width / PITCH_MODIFIER)), tempo, velocity[0]));
+                    * redSum / width / cyclesPerSec)), tempo, velocity[0]));
             chord.addNote(new Note(1, (scale.getPitch(pitchRange
-                    * greenSum / width / PITCH_MODIFIER)), tempo, velocity[1]));
+                    * greenSum / width / cyclesPerSec)), tempo, velocity[1]));
             chord.addNote(new Note(2, (scale.getPitch(pitchRange
-                    * blueSum / width / PITCH_MODIFIER)), tempo, velocity[2]));
+                    * blueSum / width / cyclesPerSec)), tempo, velocity[2]));
             tune.addChord(chord);
             rowSum = 0;
             redSum = 0;
@@ -575,7 +563,7 @@ public class ImgProvider extends JComponent {
             brtSum = 0;
         }
             int[] instruments = {Note.Vibes, Note.Pizzacatto, Note.MelodicTom};
-            Music m = new Music(NUM_CHANNELS, instruments);
+            Music m = new Music(numChannels, instruments);
             m.playTune(tune);
         });
         playThread.start();
@@ -587,6 +575,7 @@ public class ImgProvider extends JComponent {
      * @param name The title for the window.
      */
     public void showPixNew(final String name) {
+        final int displaySleepTime = 1000;
         System.out.println("ImgProvider:showSlow: Before readinImage");
         if (!isLoaded) {
             readinImage();
@@ -601,7 +590,7 @@ public class ImgProvider extends JComponent {
         System.out.println("ImgProvider:showSlow: size is ("
                 + pixwidth + ", " + pixheight + ")");
         try {
-            Thread.sleep(DISPLAY_SLEEP_TIME);  //give image time to display
+            Thread.sleep(displaySleepTime);  //give image time to display
         } catch (Exception e) {
         }
         dImage1.changeImage(this, "Second Pass");

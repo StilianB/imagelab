@@ -36,7 +36,6 @@ public class DisplayImage extends ILFrame {
     private static final int COLOR = 255;
     /**DisplayImage sleep timing. */
     private static final int SLEEP_TIME = 50;
-
     /** x-coordinate for next window. */
     private static int xspot = XMAX;
     /** y-coordinate for next window. */
@@ -65,8 +64,6 @@ public class DisplayImage extends ILFrame {
      */
     public DisplayImage(
         final ImgProvider imp, final String title, final boolean slow) {
-        //System.out.println("Constructing new DisplayImage. xspot,yspot = "
-        // + xspot + "," + yspot);
         if (imp == null) {
             System.out.println("\n\n***DisplayImage: imp is null!!! ***\n\n");
         }
@@ -99,8 +96,7 @@ public class DisplayImage extends ILFrame {
         }
         // Cascade subsequent windows
         xspot = ((xspot + width + XDELTA) <= XMAX) ? xspot + XDELTA : XINIT;
-        yspot = ((yspot + height + YDELTA + EXTRA_HEIGHT)
-            <= YMAX) ? yspot + YDELTA : YINIT;
+        yspot = ((yspot + height + YDELTA + EXTRA_HEIGHT) <= YMAX) ? yspot + YDELTA : YINIT;
         setBounds(xspot, yspot, width, height + EXTRA_HEIGHT);
         WindowCloser wc = new WindowCloser(this);
         this.addWindowListener(wc);

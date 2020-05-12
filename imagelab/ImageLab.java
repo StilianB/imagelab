@@ -21,8 +21,8 @@ import java.util.List;
  * ImageLab is a platform for image filter development.  ImageLab
  * begins by building a menu of all available filters (those .class files
  * that implement the {@see ImageFilter ImageFilter} interface).
- * [TODO User interface to allow chosing directory to search for filters.
- * [TODO User interface to allow displaying images a line or pixel at a time.
+ * [TODO: User interface to allow chosing directory to search for filters.
+ * [TODO: User interface to allow displaying images a line or pixel at a time.
  *
  * @author Dr. Aaron Gordon
  * @author Dr. Jody Paul
@@ -184,20 +184,13 @@ public class ImageLab {
                     cl = Class.forName(clName);
                     //System.out.println("Class for name is: " + cl);
                     Class<?>[] interfaces = cl.getInterfaces();
-                    //System.out.println("Number of interfaces is "
-                    //+ interfaces.length);
                     boolean isFilter = false;
                     for (int j = 0; j < interfaces.length; j++) {
-                        //System.out.println("------->>>>>>>>>>"
-                        //+ interfaces[j].getName());
                         isFilter |= interfaces[j].getName().equals(
                             "imagelab.ImageFilter");
                     } //for ja
                     if (isFilter) {
-                        ifilter =
-                        (ImageFilter) cl.getDeclaredConstructor().newInstance();
-                        //System.out.println("This is the one: "
-                        //+ fil[k].getName());
+                        ifilter = (ImageFilter) cl.getDeclaredConstructor().newInstance();
                         filters.add(ifilter);
                         JMenuItem jmi = new JMenuItem(ifilter.getMenuLabel());
                         filter.add(jmi);
@@ -220,7 +213,6 @@ public class ImageLab {
      * Provides "Play", "Save" and "Close".
      *
      * @param who Display Image used for Action Event
-     *
      * @return the new File menu
      */
     public static JMenu newFileMenu(final DisplayImage who) {
@@ -265,8 +257,7 @@ public class ImageLab {
      * Builds a dedicated ActionListener for a specific ImageFilter.
      *
      * @param imf the ImageFilter for which to make the ActionListener
-     *
-     * @return Exits the method
+     * @return a dedicated ActionListener for the given ImageFilter
      */
     public static ActionListener makeActionListener(final ImageFilter imf) {
         final ImageFilter theFilter = imf;
@@ -274,8 +265,7 @@ public class ImageLab {
         return new ActionListener() {
             public void actionPerformed(final ActionEvent ev) {
                 if (impro == null) {
-                    JOptionPane.showMessageDialog(myframe,
-                    "You must first select an image");
+                    JOptionPane.showMessageDialog(myframe, "You must first select an image");
                     return;
                 }
                 //System.out.println("Using impro number " + impro.getid());
@@ -290,12 +280,12 @@ public class ImageLab {
     /**
      * Create an ActionListener for opening an image file.
      *
-     * @return Exits the method
+     * @return the ActionListener used to perform opening the image file
      */
     public static ActionListener makeOpenListener() {
         return new ActionListener() {
             public void actionPerformed(final ActionEvent e) {
-                ImgProvider improvider; //an imgProvider to hold the image
+                ImgProvider improvider; // Hold the image
                 FileDialog fd;
                 fd = new FileDialog(frame, "Pick an image", FileDialog.LOAD);
                 fd.setVisible(true);
@@ -335,7 +325,7 @@ public class ImageLab {
     /**
      * Create an ActionListener for rendering an image in sound.
      *
-     * @return Exits the method
+     * @return the ActionListener once the image in sound is rendered
      */
     public static ActionListener makePlayListener() {
         final JFrame myframe = frame;
@@ -356,17 +346,15 @@ public class ImageLab {
     /**
      * Create an ActionListener for saving an image to a file.
      *
-     * @return Exits the method
+     * @return an ActionListener that saves the image to the file
      */
     public static ActionListener makeSaveListener() {
         final JFrame myframe = frame;
         return new ActionListener() {
             public void actionPerformed(final ActionEvent e) {
-                //an imgProvider to hold the image
-                ImgProvider improvider = impro;
+                ImgProvider improvider = impro; // Hold the image.
                 if (improvider == null) {
-                    JOptionPane.showMessageDialog(myframe,
-                    "Select the image to save");
+                    JOptionPane.showMessageDialog(myframe, "Select the image to save");
                     return;
                 } //if
                 improvider.save();
