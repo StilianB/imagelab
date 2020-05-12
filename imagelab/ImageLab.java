@@ -103,8 +103,6 @@ public class ImageLab {
                         fd.setVisible(true);
                         String theFile = fd.getFile();
                         String theDir = fd.getDirectory();
-                        //System.out.println("The file's name is "
-                        //+ theDir + theFile);
                         improvider = new ImgProvider(theDir + theFile);
                         improvider.setLab(theLab);
                         improvider.showImage(theDir + theFile);
@@ -334,8 +332,7 @@ public class ImageLab {
                 //The imgProvider holding the image
                 ImgProvider improvider = impro;
                 if (improvider == null) {
-                    JOptionPane.showMessageDialog(myframe,
-                    "First select the image to play");
+                    JOptionPane.showMessageDialog(myframe, "First select the image to play");
                     return;
                 } //if
                 improvider.play();

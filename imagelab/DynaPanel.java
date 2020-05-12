@@ -38,11 +38,11 @@ public class DynaPanel extends JPanel implements ILPanel {
         return dynPanSingleton;
     }
 
-    /**Instance Variable for background color. */
+    /** RGB color space for panel background. */
     private Color backgroundColour;
-    /**Instance Variable for the panel image. */
+    /** Panel image to be displayed. */
     private Image panelImage;
-    /**Instance Variable for the graphic. */
+    /** Component for graphic to be drawn on. */
     private Graphics graphic;
 
     /**
@@ -116,7 +116,7 @@ public class DynaPanel extends JPanel implements ILPanel {
     /**
      * Dynamic (re-)paint.
      *
-     * @param g Graphic being used to draw image
+     * @param g Component object being used to draw image
      */
     public void paint(final Graphics g) {
         g.drawImage(panelImage, 0, 0, this);

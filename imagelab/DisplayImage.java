@@ -32,9 +32,13 @@ public class DisplayImage extends ILFrame {
     private static final int XMAX = 800;
     /** Maximum y-coordinate before wrapping. */
     private static final int YMAX = 600;
-    /**DisplayImage background color. */
-    private static final int COLOR = 255;
-    /**DisplayImage sleep timing. */
+    /** Integer value of red in the DisplayImage background. */
+    private static final int RED_VALUE = 255;
+    /** Integer value of green in the DisplayImage background. */
+    private static final int GREEN_VALUE = 255;
+    /** Integer value of blue in the DisplayImage background. */
+    private static final int BLUE_VALUE = 255;
+    /** DisplayImage sleep timing. */
     private static final int SLEEP_TIME = 50;
     /** x-coordinate for next window. */
     private static int xspot = XMAX;
@@ -69,7 +73,7 @@ public class DisplayImage extends ILFrame {
         }
         setTitle(title);
         setUndecorated(false);
-        setBackground(new Color(COLOR, COLOR, COLOR));
+        setBackground(new Color(RED_VALUE, GREEN_VALUE, BLUE_VALUE));
         improvider = imp;
         int[] pix = imp.pix;
         int[] showpix = pix;
